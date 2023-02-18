@@ -3,11 +3,13 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BankModule } from './bank/bank.module';
 import { Bank } from '../database/entities/bank.entity';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`,
+      isGlobal: true,
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -21,6 +23,7 @@ import { Bank } from '../database/entities/bank.entity';
       synchronize: true,
     }),
     BankModule,
+    CategoryModule,
   ],
   controllers: [],
   providers: [],

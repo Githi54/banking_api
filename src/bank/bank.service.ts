@@ -12,7 +12,7 @@ export class BankService {
   ) {}
 
   async findAll(): Promise<Bank[]> {
-    return this.bankRepository.find();
+    return await this.bankRepository.find();
   }
 
   async findOne(id: number): Promise<Bank> {
