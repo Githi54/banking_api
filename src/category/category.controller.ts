@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { TransactionsService } from 'src/transactions/transactions.service';
 import { CategoryService } from './category.service';
@@ -24,15 +25,24 @@ export class CategoryController {
     return this.categoryService.create(createCategoryDto);
   }
 
-  @Get('statistic')
-  async getStatistic() {
-    const categories = await this.categoryService.findAll();
-
+  @Get('statistics')
+  async getStatistic(
+    @Query('categoryIds') categoryIds: string,
+    @Query('fromPeriod') fromPeriod: Date,
+    @Query('toPeriod') toPeriod: Date,
+  ) {
+    const categories = await (
+      await this.categoryService.findAll()
+    ).filter((category) => categoryIds.includes(`${category.id}`));
     const data = await Promise.all(
       categories.map(async (category) => {
         const result = {};
         const transactionsSum =
-          await this.transactionsService.getAmountByCategory(category.id);
+          await this.transactionsService.getAmountByCategory(
+            category.id,
+            fromPeriod,
+            toPeriod,
+          );
 
         result[category.name] = transactionsSum;
 

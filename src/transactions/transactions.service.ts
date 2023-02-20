@@ -15,6 +15,10 @@ export class TransactionsService {
   create(createTransactionDto: CreateTransactionDto) {
     const transaction = this.transactionRepository.create(createTransactionDto);
 
+    if (createTransactionDto.type === 'consumable') {
+      transaction.amount = 0 - transaction.amount;
+    }
+
     return this.transactionRepository.save(transaction);
   }
 
@@ -69,18 +73,24 @@ export class TransactionsService {
     }
   }
 
-  async getAmountByCategory(categoryId: number) {
-    const transactions = await this.transactionRepository.findBy({
-      category_id: categoryId,
-    });
+  async getAmountByCategory(
+    categoryId: number,
+    fromPeriod: Date,
+    toPeriod: Date,
+  ) {
+    const transactions = await this.transactionRepository
+      .createQueryBuilder('Transactions')
+      .where('category_id = :categoryId', { categoryId })
+      .andWhere('Transactions.createdAt BETWEEN :fromPeriod AND :toPeriod', {
+        fromPeriod,
+        toPeriod,
+      })
+      .getMany();
 
     if (transactions.length === 0) {
       throw new NotFoundException('This category haven`t transactions');
     }
 
-    return transactions.reduce(
-      (a, b) => (b.type === 'profitable' ? a + b.amount : a - b.amount),
-      0,
-    );
+    return transactions.reduce((a, b) => a + b.amount, 0);
   }
 }

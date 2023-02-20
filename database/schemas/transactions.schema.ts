@@ -15,4 +15,7 @@ export class TransactionsSchema {
 
   @ApiProperty()
   category_id: number;
+
+  @ApiProperty()
+  createdAt: Date;
 }

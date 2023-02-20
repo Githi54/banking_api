@@ -3,4 +3,5 @@ export class CreateTransactionDto {
   readonly type: 'profitable' | 'consumable';
   readonly bank_id: number;
   readonly category_id: number;
+  readonly createdAt: Date;
 }
