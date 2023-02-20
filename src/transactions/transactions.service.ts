@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Transactions } from 'database/entities/transaction.entity';
+import { Pagination } from 'nestjs-typeorm-paginate';
 import { Repository } from 'typeorm';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 
@@ -13,11 +14,39 @@ export class TransactionsService {
 
   create(createTransactionDto: CreateTransactionDto) {
     const transaction = this.transactionRepository.create(createTransactionDto);
+
     return this.transactionRepository.save(transaction);
   }
 
-  async findAll() {
-    return await this.transactionRepository.find();
+  async findAll(
+    page: number,
+    limit: number,
+  ): Promise<Pagination<Transactions>> {
+    const [transactions, total] = await this.transactionRepository.findAndCount(
+      {
+        skip: limit * (page - 1),
+        take: limit,
+      },
+    );
+
+    return {
+      items: transactions,
+      links: {
+        previous:
+          page > 1 ? `/transactions?page=${page - 1}&limit=${limit}` : null,
+        next:
+          total > page * limit
+            ? `/transactions?page=${page + 1}&limit=${limit}`
+            : null,
+      },
+      meta: {
+        currentPage: page,
+        itemCount: transactions.length,
+        itemsPerPage: limit,
+        totalItems: total,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   }
 
   async findOne(id: number) {
