@@ -1,26 +1,50 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Transactions } from 'database/entities/transaction.entity';
+import { Repository } from 'typeorm';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 
 @Injectable()
 export class TransactionsService {
+  constructor(
+    @InjectRepository(Transactions)
+    private transactionRepository: Repository<Transactions>,
+  ) {}
+
   create(createTransactionDto: CreateTransactionDto) {
-    return 'This action adds a new transaction';
+    const transaction = this.transactionRepository.create(createTransactionDto);
+    return this.transactionRepository.save(transaction);
   }
 
-  findAll() {
-    return `This action returns all transactions`;
+  async findAll() {
+    return await this.transactionRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} transaction`;
+  async findOne(id: number) {
+    const transaction = await this.transactionRepository.findOneBy({
+      id: id,
+    });
+
+    if (!transaction) {
+      throw new NotFoundException(`Transaction with ID ${id} not found`);
+    }
+
+    return transaction;
   }
 
-  update(id: number, updateTransactionDto: UpdateTransactionDto) {
-    return `This action updates a #${id} transaction`;
+  async update(id: number, updateTransactionDto: UpdateTransactionDto) {
+    await this.transactionRepository.update(id, updateTransactionDto);
+    return this.transactionRepository.findOneBy({
+      id: id,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} transaction`;
+  async remove(id: number) {
+    const result = await this.transactionRepository.delete(id);
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`Transaction with ID ${id} not found`);
+    }
   }
 }
