@@ -1,12 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class BankSchema {
+export class TransactionsSchema {
   @ApiProperty()
   id: number;
 
   @ApiProperty()
-  name: string;
+  amount: number;
 
   @ApiProperty()
-  balance: number;
+  type: 'profitable' | 'consumable';
 }

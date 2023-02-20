@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { Bank } from '../../database/entities/bank.entity';
+import { CreateBankDto } from './dto/create-bank.dto';
+import { UpdateBankDto } from './dto/update-bank.dto';
 
 @Injectable()
 export class BankService {
@@ -26,8 +28,8 @@ export class BankService {
     return bank;
   }
 
-  async create(bankData: Partial<Bank>): Promise<Bank> {
-    const bank = this.bankRepository.create(bankData);
+  async create(createBankDto: CreateBankDto): Promise<Bank> {
+    const bank = this.bankRepository.create(createBankDto);
     return this.bankRepository.save(bank);
   }
 
@@ -38,8 +40,8 @@ export class BankService {
     }
   }
 
-  async update(id: number, updateData: Partial<Bank>): Promise<Bank> {
-    await this.bankRepository.update(id, updateData);
+  async update(id: number, updateBankDto: UpdateBankDto) {
+    await this.bankRepository.update(id, updateBankDto);
     return this.bankRepository.findOneBy({
       id: id,
     });
