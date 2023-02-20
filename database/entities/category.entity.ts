@@ -11,7 +11,7 @@ export class Category {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false, default: '' })
+  @Column({ nullable: false, default: 'unknow' })
   name: string;
 
   @CreateDateColumn({ type: 'timestamp', select: false })

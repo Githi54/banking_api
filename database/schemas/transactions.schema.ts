@@ -12,4 +12,7 @@ export class TransactionsSchema {
 
   @ApiProperty()
   bank_id: number;
+
+  @ApiProperty()
+  category_id: number;
 }

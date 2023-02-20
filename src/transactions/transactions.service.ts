@@ -39,4 +39,19 @@ export class TransactionsService {
       throw new NotFoundException(`Transaction with ID ${id} not found`);
     }
   }
+
+  async getAmountByCategory(categoryId: number) {
+    const transactions = await this.transactionRepository.findBy({
+      category_id: categoryId,
+    });
+
+    if (transactions.length === 0) {
+      throw new NotFoundException('This category haven`t transactions');
+    }
+
+    return transactions.reduce(
+      (a, b) => (b.type === 'profitable' ? a + b.amount : a - b.amount),
+      0,
+    );
+  }
 }

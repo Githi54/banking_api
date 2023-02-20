@@ -20,6 +20,9 @@ export class Transactions {
   @Column({ nullable: false })
   bank_id: number;
 
+  @Column({ nullable: false })
+  category_id: number;
+
   @CreateDateColumn({ type: 'timestamp', select: false })
   createdAt: Date;
 
