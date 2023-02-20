@@ -25,7 +25,7 @@ export class CategoryController {
   }
 
   @Get('statistic')
-  async findAllStatistic() {
+  async getStatistic() {
     const categories = await this.categoryService.findAll();
 
     const data = await Promise.all(
