@@ -17,6 +17,9 @@ export class Transactions {
   @Column({ nullable: false })
   type: 'profitable' | 'consumable';
 
+  @Column({ nullable: false })
+  bank_id: number;
+
   @CreateDateColumn({ type: 'timestamp', select: false })
   createdAt: Date;
 

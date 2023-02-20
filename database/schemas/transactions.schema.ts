@@ -9,4 +9,7 @@ export class TransactionsSchema {
 
   @ApiProperty()
   type: 'profitable' | 'consumable';
+
+  @ApiProperty()
+  bank_id: number;
 }
