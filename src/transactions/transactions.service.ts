@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Transactions } from 'database/entities/transaction.entity';
 import { Repository } from 'typeorm';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
-import { UpdateTransactionDto } from './dto/update-transaction.dto';
 
 @Injectable()
 export class TransactionsService {
@@ -31,13 +30,6 @@ export class TransactionsService {
     }
 
     return transaction;
-  }
-
-  async update(id: number, updateTransactionDto: UpdateTransactionDto) {
-    await this.transactionRepository.update(id, updateTransactionDto);
-    return this.transactionRepository.findOneBy({
-      id: id,
-    });
   }
 
   async remove(id: number) {
