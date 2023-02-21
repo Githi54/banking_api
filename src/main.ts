@@ -14,7 +14,6 @@ async function bootstrap() {
       'This server for banking API which have information about user banks, transactions and categories.',
     )
     .setVersion('1.0.0')
-    .addTag('Banking API')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/docs', app, document);
