@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   Column,
   CreateDateColumn,
@@ -8,9 +9,11 @@ import {
 
 @Entity('category')
 export class Category {
+  @ApiProperty({ example: 1, description: 'Unique identificator' })
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty({ example: 'Eat', description: 'Category name' })
   @Column({ nullable: false, default: 'unknow' })
   name: string;
 
