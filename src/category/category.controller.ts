@@ -8,6 +8,8 @@ import {
   Delete,
   Query,
 } from '@nestjs/common';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Category } from 'database/entities/category.entity';
 import { TransactionsService } from 'src/transactions/transactions.service';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -20,11 +22,15 @@ export class CategoryController {
     private readonly transactionsService: TransactionsService,
   ) {}
 
+  @ApiOperation({ summary: 'Create new category' })
+  @ApiResponse({ status: 200, type: Category })
   @Post()
-  create(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.categoryService.create(createCategoryDto);
+  async create(@Body() createCategoryDto: CreateCategoryDto) {
+    return await this.categoryService.create(createCategoryDto);
   }
 
+  @ApiOperation({ summary: 'Get statistic' })
+  @ApiResponse({ status: 200, type: [Object] })
   @Get('statistics')
   async getStatistic(
     @Query('categoryIds') categoryIds: string,
@@ -53,16 +59,22 @@ export class CategoryController {
     return data;
   }
 
+  @ApiOperation({ summary: 'Get all categories' })
+  @ApiResponse({ status: 200, type: [Category] })
   @Get()
   findAll() {
     return this.categoryService.findAll();
   }
 
+  @ApiOperation({ summary: 'Get category by id' })
+  @ApiResponse({ status: 200, type: Category })
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.categoryService.findOne(+id);
   }
 
+  @ApiOperation({ summary: 'Update category by id' })
+  @ApiResponse({ status: 200, type: Category })
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -71,6 +83,8 @@ export class CategoryController {
     return this.categoryService.update(+id, updateCategoryDto);
   }
 
+  @ApiOperation({ summary: 'Delete category by id' })
+  @ApiResponse({ status: 200 })
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.categoryService.remove(+id);
