@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
+const config_1 = require("@nestjs/config");
 const typeorm_1 = require("@nestjs/typeorm");
 const bank_module_1 = require("./bank/bank.module");
 const bank_entity_1 = require("../database/entities/bank.entity");
@@ -18,13 +19,17 @@ let AppModule = class AppModule {
 AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            config_1.ConfigModule.forRoot({
+                envFilePath: `.${process.env.NODE_ENV}.env`,
+                isGlobal: true,
+            }),
             typeorm_1.TypeOrmModule.forRoot({
                 type: 'postgres',
-                host: 'localhost',
-                port: 5432,
-                username: 'postgres',
-                password: 'BAscjbaiu23e4',
-                database: 'banking-api',
+                host: process.env.POSTGRES_HOST,
+                port: Number(process.env.POSTGRES_PORT),
+                username: process.env.POSTGRES_USER,
+                password: `${process.env.POSTGRES_PASSWORD}`,
+                database: process.env.POSTGRES_DB,
                 entities: [bank_entity_1.Bank],
                 autoLoadEntities: true,
                 synchronize: true,
