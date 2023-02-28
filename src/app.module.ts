@@ -14,7 +14,7 @@ import { TransactionsModule } from './transactions/transactions.module';
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'postgres',
+      host: 'localhost',
       port: 5432,
       username: 'postgres',
       password: 'BAscjbaiu23e4',
