@@ -9,7 +9,7 @@ $ npm install
 ```
 
 ## Running the app
-You need a .env faile, what contain information for starting. If you use development mode, youre file should be name ```.develop.env```. And should be name ```.production.env``` for production mode 
+You need a .env faile, what contain information for starting. If you use development mode, youre file should be name ```.develop.env```. And should be name ```.production.env``` for production mode. If you use my ```.develop.env``` and you want to start with script ```$ npm run start:dev```, you should be rename POSTGRES_HOST <br /> <br /> ```POSTGRES_HOST=localhost```
 
 ```bash
 # development
