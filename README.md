@@ -40,6 +40,9 @@ $ npm run start:prod
 - ```/transactions/:id``` get transaction by id.
 
 ## Running app with docker
+If you use my .develop.env, you should be rename POSTGRES_HOST
+
+POSTGRES_HOST=postgres
 
 ```bash
 docker-compose build
